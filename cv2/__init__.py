@@ -4,7 +4,7 @@ from cv2.Agglomerative_clustering import Agglomerative
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('clusters5.csv', sep=';', header=None)
+    df = pd.read_csv('clusters3.csv', sep=';', header=None)
     df.columns = ['x', 'y']
 
     clustering_algorithm = Agglomerative(n_clusters=5, linkage="single")
