@@ -7,7 +7,7 @@ import pandas as pd
 
 
 def pd_options():
-    pd.set_option('display.max_rows', 10)
+    pd.set_option('display.max_rows', 20)
     pd.set_option('display.max_columns', 500)
     pd.set_option('display.width', 1000)
 
@@ -65,6 +65,9 @@ if __name__ == '__main__':
     df_features.insert((df_features.shape[1]), "agglomerative", clusters_agglomerative.labels_)
     df_features.insert((df_features.shape[1]), "agglo.ward", clusters_agglomerative_ward.labels_)
     print(df_features.groupby(['kmeans']).mean())
+
+    df.insert((df_features.shape[1]), "kmeans", clusters_kmeans.labels_)
+    print(df[df.kmeans == 2])
 
     print_clusters_size(clusters_dbscan)
 
