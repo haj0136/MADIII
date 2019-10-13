@@ -81,6 +81,4 @@ if __name__ == '__main__':
     # DBSCAN annulus
     clusters = plot_db_scan(data_annulus, 2, 2)
 
-
-
     print()
