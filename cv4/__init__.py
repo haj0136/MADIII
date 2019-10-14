@@ -67,6 +67,7 @@ if __name__ == '__main__':
     print(df_features.groupby(['kmeans']).mean())
 
     df.insert((df_features.shape[1]), "kmeans", clusters_kmeans.labels_)
+    df.insert((df_features.shape[1]), "dbscan", clusters_dbscan.labels_)
     print(df[df.kmeans == 2])
 
     print_clusters_size(clusters_dbscan)
