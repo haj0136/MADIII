@@ -24,7 +24,7 @@ def svd(X):
 
 if __name__ == '__main__':
     pd_options()
-    df = pd.read_csv('bars.csv')
+    df = pd.read_csv('bars.csv', header=None)
 
     U, S, VT = np.linalg.svd(df.values)
 
@@ -35,17 +35,17 @@ if __name__ == '__main__':
     print("Right Singular Vectors:")
     print(VT)
 
-    svd_ = TruncatedSVD(n_components=4)
+    svd_ = TruncatedSVD(n_components=20)
     A_transf = svd_.fit_transform(df.values)
+    recovered_matrix = A_transf.dot(svd_.components_)
+    print(recovered_matrix[0])
     print("Transformed Matrix after reducing to 2 features:")
     print(A_transf)
 
     nmf_ = NMF(n_components=4)
     NMF_transf = nmf_.fit_transform(df.values)
     print(np.shape(NMF_transf))
-    print("Original matrix")
-    print(np.linalg.norm(df.values, ord="fro"))
     print("SVD")
-    print(np.linalg.norm(A_transf, ord="fro"))
+    print(np.linalg.norm(df.values - recovered_matrix, ord="fro"))
     print("NMF")
     print(np.linalg.norm(NMF_transf, ord="fro"))
