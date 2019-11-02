@@ -11,11 +11,10 @@ def pd_options():
 
 
 def svd(X):
-    # Data matrix X, X doesn't need to be 0-centered
     n, m = X.shape
     # Compute full SVD
     U, Sigma, Vh = np.linalg.svd(X,
-        full_matrices=False, # It's not necessary to compute the full matrix of U or V
+        full_matrices=False,
         compute_uv=True)
 
     X_svd = np.dot(U, Sigma)
@@ -39,13 +38,18 @@ if __name__ == '__main__':
     A_transf = svd_.fit_transform(df.values)
     recovered_matrix = A_transf.dot(svd_.components_)
     print(recovered_matrix[0])
-    print("Transformed Matrix after reducing to 2 features:")
+    print("Transformed Matrix after reducing to 20 features:")
     print(A_transf)
 
-    nmf_ = NMF(n_components=4)
+    nmf_ = NMF(n_components=20)
     NMF_transf = nmf_.fit_transform(df.values)
+    recovered_nmf = NMF_transf.dot(nmf_.components_)
+    print("Recovered NMF first line:")
+    print(recovered_nmf[0])
     print(np.shape(NMF_transf))
     print("SVD")
     print(np.linalg.norm(df.values - recovered_matrix, ord="fro"))
     print("NMF")
-    print(np.linalg.norm(NMF_transf, ord="fro"))
+    print(np.linalg.norm(df.values - recovered_nmf, ord="fro"))
+
+
