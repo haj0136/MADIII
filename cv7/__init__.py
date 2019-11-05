@@ -57,6 +57,12 @@ def plot_svm(models, x, y):
     plt.show()
 
 
+def print_report(svc, test_data, label, results):
+    y_pred = svc.predict(test_data)
+    print(label)
+    print(classification_report(results, y_pred))
+
+
 if __name__ == '__main__':
     colnames = ['sepal-length', 'sepal-width', 'petal-length', 'petal-width', 'Class']
     dataset = import_data(colnames)
@@ -69,16 +75,9 @@ if __name__ == '__main__':
     svc_linear = SVC(kernel='linear', C=C).fit(X_train, y_train)
     svc_linear2 = SVC(kernel='linear', C=10).fit(X_train, y_train)
     svc_poly = SVC(kernel='poly', degree=3).fit(X_train, y_train)
+    svc_rbf = SVC(kernel='rbf', C=10).fit(X_train, y_train)
 
-    y_pred = svc_linear.predict(X_test)
-    print(f"Linear C = {C}")
-    print()
-    print(classification_report(y_test, y_pred))
+    print_report(svc_linear, X_test, f"Linear C = {C}", y_test)
+    print_report(svc_rbf, X_test, f"RBF C = {C}", y_test)
 
-    svc_rbf = SVC(kernel='rbf', C=10)
-    svc_rbf.fit(X_train, y_train)
-    y_pred = svc_rbf.predict(X_test)
-    print(f"RBF C = {C}")
-    print()
-    print(classification_report(y_test, y_pred))
     plot_svm([svc_linear, svc_linear2, svc_rbf, svc_poly], X, Y)
