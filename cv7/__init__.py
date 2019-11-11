@@ -18,7 +18,7 @@ def import_data(colnames):
     return data
 
 
-def plot_svm(models, x, y):
+def plot_svm(models, x, y, c):
     h = .02  # step size in the mesh
     # create a mesh to plot in
     x_min, x_max = x.iloc[:, 0].min() - 1, x.iloc[:, 0].max() + 1
@@ -27,10 +27,10 @@ def plot_svm(models, x, y):
                          np.arange(y_min, y_max, h))
 
     # title for the plots
-    titles = ['SVC with linear kernel C=1',
+    titles = [f'SVC with linear kernel C={c}',
               'Linear SVC C = 10',
-              'SVC with RBF kernel',
-              'SVC with polynomial (degree 3) kernel']
+              f'SVC with RBF kernel c={c}',
+              'SVC with RBF c = 10']
 
     for i, clf in enumerate(models):
         # Plot the decision boundary. For that, we will assign a color to each
@@ -43,9 +43,8 @@ def plot_svm(models, x, y):
         # Put the result into a color plot
         Z = Z.reshape(xx.shape)
         plt.contourf(xx, yy, Z, cmap=plt.cm.coolwarm, alpha=0.8)
-
         # Plot also the training points
-        plt.scatter(x.iloc[:, 0], x.iloc[:, 1], c=y, cmap=plt.cm.coolwarm)
+        plt.scatter(x.iloc[:, 0], x.iloc[:, 1], c=y, cmap=plt.cm.RdYlGn)
         plt.xlabel('Sepal length')
         plt.ylabel('Sepal width')
         plt.xlim(xx.min(), xx.max())
@@ -69,15 +68,15 @@ if __name__ == '__main__':
     # X = dataset.drop(['Class'], axis=1)
     X = dataset.iloc[:, :2]
     Y = dataset['Class']
-    C = 1.0
+    C = 5.0
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
 
     svc_linear = SVC(kernel='linear', C=C).fit(X_train, y_train)
     svc_linear2 = SVC(kernel='linear', C=10).fit(X_train, y_train)
-    svc_poly = SVC(kernel='poly', degree=3).fit(X_train, y_train)
-    svc_rbf = SVC(kernel='rbf', C=10).fit(X_train, y_train)
+    svc_poly = SVC(kernel='rbf', C=10).fit(X_train, y_train)
+    svc_rbf = SVC(kernel='rbf', C=C).fit(X_train, y_train)
 
     print_report(svc_linear, X_test, f"Linear C = {C}", y_test)
     print_report(svc_rbf, X_test, f"RBF C = {C}", y_test)
 
-    plot_svm([svc_linear, svc_linear2, svc_rbf, svc_poly], X, Y)
+    plot_svm([svc_linear, svc_linear2, svc_rbf, svc_poly], X, Y, C)
